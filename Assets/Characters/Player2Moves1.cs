@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerMoves : MonoBehaviour
+public class Player2Moves1 : MonoBehaviour
 {
     private float movimientoHorizontal;
-    public string nombre;
+
     public float velocidadMovimiento = 17f; // Velocidad de movimiento lateral.
     public float fuerzaSalto = 60f; // Fuerza del salto.
     public Transform puntoVerificador; // Punto de verificación para detectar el suelo.
     public LayerMask capasDeSuelo; // Las capas que considerarás como suelo.
     public int maxSaltos = 2; // Número máximo de saltos.
     public float maxAttackCoolDown = 0.5f;
-    public GameObject porrazoPrefab;
     private float attackCoolDown=0;
     private int saltosRestantes;
     private bool enSuelo = false;
@@ -25,13 +24,13 @@ public class PlayerMoves : MonoBehaviour
         puntoVerificador = GetComponent<Transform>();
         capasDeSuelo = LayerMask.GetMask("Ground");
         saltosRestantes = maxSaltos;
-        nombre = "elbueno";
+
     }
 
     private void Update()
     {
         // a ver si se mueve lateralmente
-        movimientoHorizontal = Input.GetAxisRaw("Horizontal");
+        movimientoHorizontal = Input.GetAxisRaw("Horizontalp2");
 
 
         //a ver si esta en el suelo
@@ -42,11 +41,11 @@ public class PlayerMoves : MonoBehaviour
             saltosRestantes = maxSaltos;
         }
 
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jumpp2"))
         {
             Saltar();
         }
-        if (Input.GetButtonDown("Fire1")) { Atacar1(); }
+        if (Input.GetButtonDown("Fire1p2")) { Atacar1(); }
 
         attackCoolDown -= Time.deltaTime;
     }
@@ -84,12 +83,9 @@ public class PlayerMoves : MonoBehaviour
         }
     }
     private void Ataque1() {
-        
-        GameObject proyectil = Instantiate(porrazoPrefab, puntoVerificador.position, puntoVerificador.rotation);
-        PorrazoBehaviour proyectilScript = proyectil.GetComponent<PorrazoBehaviour>();
-        proyectilScript.deQuienEsAtaque = this.gameObject;
-
-        Destroy(proyectil,0.5f);
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.AddComponent<Rigidbody>();
+        cube.transform.position = new Vector3(0, 0, 0);
     }
 }
 
