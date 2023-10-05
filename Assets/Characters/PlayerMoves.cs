@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -9,7 +12,8 @@ public class PlayerMovement : MonoBehaviour
     public Transform puntoVerificador; // Punto de verificación para detectar el suelo.
     public LayerMask capasDeSuelo; // Las capas que considerarás como suelo.
     public int maxSaltos = 2; // Número máximo de saltos.
-
+    public float maxAttackCoolDown = 0.3f;
+    private float attackCoolDown=0;
     private int saltosRestantes;
     private bool enSuelo = false;
     private Rigidbody2D rb;
@@ -25,8 +29,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        // a ver si se mueve lateralmente
+        movimientoHorizontal = Input.GetAxisRaw("Horizontal");
+
+
         //a ver si esta en el suelo
-        enSuelo = Physics2D.OverlapCircle((puntoVerificador.position - (new Vector3(0,puntoVerificador.localScale.y/2, 0))), 0.1f, capasDeSuelo);
+        enSuelo = Physics2D.OverlapCircle((puntoVerificador.position - (new Vector3(0, puntoVerificador.localScale.y / 2, 0))), 0.1f, capasDeSuelo);
 
         if (enSuelo)
         {
@@ -34,38 +42,50 @@ public class PlayerMovement : MonoBehaviour
         }
 
         if (Input.GetButtonDown("Jump"))
-        { 
+        {
             Saltar();
         }
+        if (Input.GetButtonDown("Fire1")) { Atacar1(); }
 
-
-        // a ver si se mueve lateralmente
-        movimientoHorizontal = Input.GetAxis("Horizontal");
-
-        
+        attackCoolDown -= Time.deltaTime;
     }
 
-    private void FixedUpdate() {
-        // Establece la velocidad de manera instantánea en función de la entrada del jugador.
-        if (movimientoHorizontal != 0)
-        {
-            puntoVerificador.position += new Vector3(movimientoHorizontal * velocidadMovimiento * Time.deltaTime, 0, 0);
-        }
-        else { puntoVerificador.position = new Vector3(puntoVerificador.position.x, puntoVerificador.position.y, puntoVerificador.position.z); }
+    private void FixedUpdate()
+    {
+
+        // Establece la velocidad de manera instantánea en función de la entrada del 
+        rb.velocity = new Vector2(movimientoHorizontal * velocidadMovimiento, rb.velocity.y);
+
     }
 
     //salto
     private void Saltar()
     {
-        if (saltosRestantes >= 2) {
+        if (saltosRestantes >= 2)
+        {
             rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
             saltosRestantes--;
         }
-        if (saltosRestantes == 1) {
-            rb.velocity = new Vector2(rb.velocity.x, (float)(fuerzaSalto/2.0));
+        if (saltosRestantes == 1)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, (float)(fuerzaSalto / 2.0));
             saltosRestantes--;
         }
-        
-        
+    }
+
+
+    //pegar
+    private void Atacar1() {
+        //IMPLEMENTAR
+        if (attackCoolDown <= 0) {
+            Ataque1();
+            attackCoolDown = maxAttackCoolDown;
+        }
+    }
+    private void Ataque1() {
+        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cube.AddComponent<Rigidbody>();
+        cube.transform.position = new Vector3(0, 0, 0);
     }
 }
+
