@@ -130,6 +130,7 @@ public class PlayerMoves : MonoBehaviour
         Destroy(proyectil,0.2f);
     }
     public void recibirGolpe(float daño, Vector2 direccion) {
+        rb.velocity = new Vector2(0, 0);
 
         dañoAcumulado += daño;
         direccion.Normalize();
