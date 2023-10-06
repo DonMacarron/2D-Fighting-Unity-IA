@@ -140,7 +140,16 @@ public class PlayerMoves : MonoBehaviour
     }
     public void Restart() {
         transform.position = new Vector3(0,0,0);
-        dañoAcumulado = 0;
+        Start();
     }
+
+    public void eliminarVida() {
+        vidasRestantes -= 1;
+        if (vidasRestantes <= 0) {
+            perder();
+        }
+        Restart();
+    }
+    public void perder() { }
 }
 
