@@ -21,9 +21,9 @@ public class PlayerMoves : MonoBehaviour
     public int vidasIniciales = 3;
     public int vidasRestantes;
     public float dañoAcumulado;
-    public float ataqueDePersonaje = 3f;
+    public float ataqueDePersonaje = 1f;
     public float velocidadMovimiento = 17f; // Velocidad de movimiento lateral.
-    public float fuerzaSalto = 60f; // Fuerza del salto.
+    public float fuerzaSalto = 33f; // Fuerza del salto.
     public Transform puntoVerificador; // Punto de verificación para detectar el suelo.
     public LayerMask capasDeSuelo; // Las capas que considerarás como suelo.
     public int maxSaltos = 2; // Número máximo de saltos.
@@ -39,8 +39,8 @@ public class PlayerMoves : MonoBehaviour
 
     protected virtual void Start()
     {
-        jumpCoolDown = 0.05f;
-        dañoAcumulado = 40;
+        jumpCoolDown = 0.02f;
+        dañoAcumulado = 20;
         mirandoHacia = 0;
         rb = GetComponent<Rigidbody2D>();
         puntoVerificador = GetComponent<Transform>();
@@ -57,20 +57,25 @@ public class PlayerMoves : MonoBehaviour
 
         // a ver si se mueve lateralmente
         movimientoHorizontal = Input.GetAxisRaw(Horizontal);
-        if(movimientoHorizontal==1) { mirandoHacia = 0; lastIzqDer = 0; }
+        if (movimientoHorizontal == 1) { mirandoHacia = 0; lastIzqDer = 0; }
         if (movimientoHorizontal == -1) { mirandoHacia = 2; lastIzqDer = 2; }
         movimientoVertical = Input.GetAxisRaw(Vertical);
         if (movimientoVertical == 1) { mirandoHacia = 1; }
         if (movimientoVertical == -1) { mirandoHacia = 3; }
-        if(movimientoHorizontal == 0 && movimientoVertical == 0) { mirandoHacia = lastIzqDer; }
+        if (movimientoHorizontal == 0 && movimientoVertical == 0) { mirandoHacia = lastIzqDer; }
 
         //a ver si esta en el suelo
-        enSuelo = Physics2D.OverlapCircle((puntoVerificador.position - (new Vector3(0, puntoVerificador.localScale.y / 2, 0))), 0.20f, capasDeSuelo);
+        enSuelo =  Physics2D.OverlapBox(
+        new Vector2(puntoVerificador.position.x, puntoVerificador.position.y - puntoVerificador.localScale.y / 2),
+        new Vector2(1f, 0.01f), // Ancho y alto del rectángulo
+        0, // Ángulo de rotación (si es necesario)
+        capasDeSuelo);
 
         if (enSuelo)
         {
             saltosRestantes = maxSaltos;
         }
+        else { if (saltosRestantes > 1) { saltosRestantes = 1; } }
 
         if (Input.GetButtonDown(Jump) && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0  && jumpCoolDown<0)
         {
@@ -87,8 +92,7 @@ public class PlayerMoves : MonoBehaviour
     private void FixedUpdate()
     {
         //Mathf.Abs(rb.velocity.x)-0.5f > velocidadMovimiento  ||
-        Debug.Log(""+untouchableCoolDown);
-        if((untouchableCoolDown)>0) { rb.AddForce(new Vector3(movimientoHorizontal*(velocidadMovimiento*0.3f), 0, 0), ForceMode2D.Impulse);}
+        if((untouchableCoolDown)>0) { rb.AddForce(new Vector3(movimientoHorizontal*(velocidadMovimiento * 0.3f * (dañoAcumulado * 0.001f)), 0, 0), ForceMode2D.Impulse);}
         else { 
             rb.velocity = new Vector2(movimientoHorizontal * velocidadMovimiento, rb.velocity.y);
         }
@@ -102,13 +106,12 @@ public class PlayerMoves : MonoBehaviour
         if (saltosRestantes >= 2)
         {
             rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
-            saltosRestantes--;
         }
         if (saltosRestantes == 1)
         {
-            rb.velocity = new Vector2(rb.velocity.x, (float)(fuerzaSalto / 2.0));
-            saltosRestantes--;
+            rb.velocity = new Vector2(rb.velocity.x, (float)(fuerzaSalto));
         }
+        saltosRestantes--;
         jumpCoolDown = 0.05f;
     }
 
@@ -135,7 +138,7 @@ public class PlayerMoves : MonoBehaviour
         dañoAcumulado += daño;
         direccion.Normalize();
         rb.AddForce(direccion * dañoAcumulado, ForceMode2D.Impulse);
-        untouchableCoolDown = minUntouchableCoolDown + (dañoAcumulado*0.0009f);
+        untouchableCoolDown = minUntouchableCoolDown + (dañoAcumulado*0.0008f);
 
     }
     public void Restart() {
