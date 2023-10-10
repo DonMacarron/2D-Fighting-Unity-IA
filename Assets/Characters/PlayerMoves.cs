@@ -27,11 +27,11 @@ public class PlayerMoves : MonoBehaviour
     public Transform puntoVerificador; // Punto de verificación para detectar el suelo.
     public LayerMask capasDeSuelo; // Las capas que considerarás como suelo.
     public int maxSaltos = 2; // Número máximo de saltos.
-    public float maxAttackCoolDown = 0.35f;
+    public float maxAttackCoolDown = 1f;
     public GameObject porrazoPrefab;
     public float untouchableCoolDown;
     public float minUntouchableCoolDown=0.2f;
-    private float attackCoolDown=0;
+    private float attackCoolDown;
     private int saltosRestantes;
     private bool enSuelo = false;
     private Rigidbody2D rb;
@@ -48,6 +48,7 @@ public class PlayerMoves : MonoBehaviour
         saltosRestantes = maxSaltos;
         nombre = "elbueno";
         vidasRestantes = vidasIniciales;
+        attackCoolDown = 0;
     }
 
     private void Update()
@@ -81,7 +82,7 @@ public class PlayerMoves : MonoBehaviour
         {
             Saltar();
         }
-        if (Input.GetButtonDown(Fire1) && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0) { Atacar1(); }
+        if (Input.GetButtonDown(Fire1) && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0  &&  attackCoolDown<0) { Atacar1(); }
 
         attackCoolDown -= Time.deltaTime;
         untouchableCoolDown -= Time.deltaTime;
@@ -133,6 +134,7 @@ public class PlayerMoves : MonoBehaviour
         Destroy(proyectil,0.2f);
     }
     public void recibirGolpe(float daño, Vector2 direccion) {
+        attackCoolDown = 0;
         rb.velocity = new Vector2(0, 0);
 
         dañoAcumulado += daño;

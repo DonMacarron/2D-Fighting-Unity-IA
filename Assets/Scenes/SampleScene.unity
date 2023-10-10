@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 169439990}
   - component: {fileID: 169439989}
   - component: {fileID: 169439993}
+  - component: {fileID: 169439994}
   m_Layer: 0
   m_Name: Player1
   m_TagString: Player
@@ -315,6 +316,27 @@ MonoBehaviour:
   porrazoPrefab: {fileID: 5619577391591878657, guid: bb010882e3f4b994b8baee719357be44, type: 3}
   untouchableCoolDown: 0
   minUntouchableCoolDown: 0.2
+--- !u!95 &169439994
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169439988}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e64273298c443ce4f874d1d176965792, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &253915128
 GameObject:
   m_ObjectHideFlags: 0
