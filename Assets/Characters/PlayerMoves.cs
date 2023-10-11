@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
@@ -25,7 +27,8 @@ public class PlayerMoves : MonoBehaviour
     public float velocidadMovimiento = 17f; // Velocidad de movimiento lateral.
     public float fuerzaSalto = 33f; // Fuerza del salto.
     public Transform puntoVerificador; // Punto de verificación para detectar el suelo.
-    public LayerMask capasDeSuelo; // Las capas que considerarás como suelo.
+    public LayerMask capasDeSuelo;
+    public LayerMask capasDeJugador;
     public int maxSaltos = 2; // Número máximo de saltos.
     public float maxAttackCoolDown = 1f;
     public GameObject porrazoPrefab;
@@ -36,6 +39,7 @@ public class PlayerMoves : MonoBehaviour
     private bool enSuelo = false;
     private Rigidbody2D rb;
     private float jumpCoolDown;
+    private Collider2D otherPlayerCollider;
 
     protected virtual void Start()
     {
@@ -45,6 +49,7 @@ public class PlayerMoves : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         puntoVerificador = GetComponent<Transform>();
         capasDeSuelo = LayerMask.GetMask("Ground");
+        capasDeJugador = LayerMask.GetMask("Player");
         saltosRestantes = maxSaltos;
         nombre = "elbueno";
         vidasRestantes = vidasIniciales;
@@ -53,9 +58,8 @@ public class PlayerMoves : MonoBehaviour
 
     private void Update()
     {
-
-
-
+      
+        
         // a ver si se mueve lateralmente
         movimientoHorizontal = Input.GetAxisRaw(Horizontal);
         if (movimientoHorizontal == 1) { mirandoHacia = 0; lastIzqDer = 0; }
@@ -68,9 +72,21 @@ public class PlayerMoves : MonoBehaviour
         //a ver si esta en el suelo
         enSuelo =  Physics2D.OverlapBox(
         new Vector2(puntoVerificador.position.x, puntoVerificador.position.y - puntoVerificador.localScale.y / 2),
-        new Vector2(1f, 0.01f), // Ancho y alto del rectángulo
-        0, // Ángulo de rotación (si es necesario)
+        new Vector2(puntoVerificador.localScale.x, 0.01f),
+        0, 
         capasDeSuelo);
+
+        Vector2 raycastOrigin = new Vector2(puntoVerificador.position.x, puntoVerificador.position.y - (puntoVerificador.localScale.y / 2) - 3f);
+        Vector2 raycastDirection = -Vector2.up;
+        RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, raycastDirection, 0.01f, capasDeJugador);
+        if (hit.collider != null)
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                enSuelo = true;
+            }
+        }
+
 
         if (enSuelo)
         {

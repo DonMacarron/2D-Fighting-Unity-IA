@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player1 : PlayerMoves
 {
     protected override void Start()
-    {
+    {   
         base.Start();
         Horizontal = "Horizontal";
         Vertical = "Vertical";
