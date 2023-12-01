@@ -11,5 +11,7 @@ public class Player1 : PlayerMoves
         Vertical = "Vertical";
         Jump = "Jump";
         Fire1 = "Fire1";
+        isFacingRight = true;
+        lastFaced = true;
     }
 }

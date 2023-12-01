@@ -11,6 +11,7 @@ public class PlayerMoves : MonoBehaviour
     public string Vertical;
     public string Jump;
     public string Fire1;
+    public Animator animator;
 
     private float movimientoHorizontal;
     private float movimientoVertical;
@@ -40,6 +41,9 @@ public class PlayerMoves : MonoBehaviour
     private Rigidbody2D rb;
     private float jumpCoolDown;
     private Collider2D otherPlayerCollider;
+    private SpriteRenderer spriteRenderer;
+    protected bool isFacingRight;
+    protected bool lastFaced;
 
     protected virtual void Start()
     {
@@ -54,9 +58,11 @@ public class PlayerMoves : MonoBehaviour
         nombre = "elbueno";
         vidasRestantes = vidasIniciales;
         attackCoolDown = 0;
-    }
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
-    private void Update()
+}
+
+private void Update()
     {
       
         
@@ -104,6 +110,33 @@ public class PlayerMoves : MonoBehaviour
         untouchableCoolDown -= Time.deltaTime;
         jumpCoolDown -= Time.deltaTime;
         if (Input.GetKeyDown("r")) { Restart(); }
+
+
+        //animaciones
+        if (rb.velocity.x > 0.1)
+        {
+            animator.SetBool("IsFacingLeft", false);
+            animator.SetBool("Run_ing", true);
+            isFacingRight = true;
+            if (lastFaced != isFacingRight) { FlipSprite(); }
+            lastFaced = true;
+        }
+        else
+        {
+            if (rb.velocity.x < -0.1)
+            {
+                animator.SetBool("IsFacingLeft", true);
+                animator.SetBool("Run_ing", true);
+                isFacingRight = false;
+                if (lastFaced != isFacingRight) { FlipSprite(); }
+                lastFaced = false;
+            }
+            else { animator.SetBool("Run_ing", false); }
+        }
+        animator.SetFloat("Up_Down", rb.velocity.y);
+        animator.SetBool("On_Air", !enSuelo);
+
+        
     }
 
     private void FixedUpdate()
@@ -123,10 +156,12 @@ public class PlayerMoves : MonoBehaviour
         if (saltosRestantes >= 2)
         {
             rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
+            animator.SetTrigger("Jump_ing");
         }
         if (saltosRestantes == 1)
         {
             rb.velocity = new Vector2(rb.velocity.x, (float)(fuerzaSalto));
+            animator.SetTrigger("Double_Jump_ing");
         }
         saltosRestantes--;
         jumpCoolDown = 0.05f;
@@ -141,13 +176,15 @@ public class PlayerMoves : MonoBehaviour
         
     }
     private void Ataque1() {
-        
+        animator.SetBool("On_Attack", true);
+        animator.SetTrigger("Attack_ing");
         GameObject proyectil = Instantiate(porrazoPrefab, puntoVerificador.position, puntoVerificador.rotation);
         PorrazoBehaviour proyectilScript = proyectil.GetComponent<PorrazoBehaviour>();
         proyectilScript.deQuienEsAtaque = this.gameObject;
         proyectilScript.scriptPlayer = this;
 
         Destroy(proyectil,0.2f);
+        animator.SetBool("On_Attack", false);
     }
     public void recibirGolpe(float daño, Vector2 direccion) {
         attackCoolDown = 0;
@@ -161,6 +198,7 @@ public class PlayerMoves : MonoBehaviour
     }
     public void Restart() {
         transform.position = new Vector3(0,0,0);
+        FlipSprite();
         Start();
     }
 
@@ -172,5 +210,14 @@ public class PlayerMoves : MonoBehaviour
         Restart();
     }
     public void perder() { }
+
+
+
+    public void FlipSprite()
+    {  
+        Vector2 scale = transform.localScale;
+        scale.x *= -1;
+        transform.localScale = scale;
+    }
 }
 
