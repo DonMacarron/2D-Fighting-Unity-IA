@@ -42,13 +42,13 @@ public class PlayerMoves : MonoBehaviour
     private float jumpCoolDown;
     private Collider2D otherPlayerCollider;
     private SpriteRenderer spriteRenderer;
-    protected bool isFacingRight;
+    public bool isFacingRight;
     protected bool lastFaced;
 
     protected virtual void Start()
     {
         jumpCoolDown = 0.02f;
-        dañoAcumulado = 20;
+        dañoAcumulado = 40;
         mirandoHacia = 0;
         rb = GetComponent<Rigidbody2D>();
         puntoVerificador = GetComponent<Transform>();
@@ -77,8 +77,8 @@ private void Update()
 
         //a ver si esta en el suelo
         enSuelo =  Physics2D.OverlapBox(
-        new Vector2(puntoVerificador.position.x, puntoVerificador.position.y - puntoVerificador.localScale.y / 2),
-        new Vector2(puntoVerificador.localScale.x, 0.01f),
+        new Vector2(puntoVerificador.position.x, puntoVerificador.position.y - 0.06f),
+        new Vector2(Math.Abs(puntoVerificador.localScale.x) + 0.03f, Math.Abs(puntoVerificador.localScale.y) + 0.03f),
         0, 
         capasDeSuelo);
 
@@ -113,7 +113,7 @@ private void Update()
 
 
         //animaciones
-        if (rb.velocity.x > 0.1)
+        if (movimientoHorizontal > 0.5)
         {
             animator.SetBool("IsFacingLeft", false);
             animator.SetBool("Run_ing", true);
@@ -123,7 +123,7 @@ private void Update()
         }
         else
         {
-            if (rb.velocity.x < -0.1)
+            if (movimientoHorizontal < -0.5)
             {
                 animator.SetBool("IsFacingLeft", true);
                 animator.SetBool("Run_ing", true);
@@ -135,6 +135,10 @@ private void Update()
         }
         animator.SetFloat("Up_Down", rb.velocity.y);
         animator.SetBool("On_Air", !enSuelo);
+
+        
+        animator.SetBool("Stunned_ing", untouchableCoolDown > 0);
+        
 
         
     }
@@ -183,8 +187,30 @@ private void Update()
         proyectilScript.deQuienEsAtaque = this.gameObject;
         proyectilScript.scriptPlayer = this;
 
-        Destroy(proyectil,0.2f);
+        
+        StartCoroutine(DestroyProjectile(proyectil));
+    }
+
+    IEnumerator DestroyProjectile(GameObject proyectilToDestroy)
+    {
+        float startTime = Time.time; // Guarda el tiempo actual
+
+        while (Time.time - startTime < 0.2f)
+        {
+            // Verifica si stunned
+            if (untouchableCoolDown > 0)
+            {
+                // Si la variable es verdadera, destruye el proyectil y sale del bucle
+                animator.SetBool("On_Attack", false);
+                Destroy(proyectilToDestroy);
+                yield break; // Sale de la corutina
+            }
+
+            // Espera hasta la siguiente iteración del bucle
+            yield return null;
+        }
         animator.SetBool("On_Attack", false);
+        Destroy(proyectilToDestroy);
     }
     public void recibirGolpe(float daño, Vector2 direccion) {
         attackCoolDown = 0;
@@ -194,6 +220,9 @@ private void Update()
         direccion.Normalize();
         rb.AddForce(direccion * dañoAcumulado, ForceMode2D.Impulse);
         untouchableCoolDown = minUntouchableCoolDown + (dañoAcumulado*0.0008f);
+
+        //animator
+        animator.SetTrigger("Hit");
 
     }
     public void Restart() {
@@ -218,6 +247,7 @@ private void Update()
         Vector2 scale = transform.localScale;
         scale.x *= -1;
         transform.localScale = scale;
+
     }
 }
 
