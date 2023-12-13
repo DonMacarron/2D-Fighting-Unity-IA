@@ -44,6 +44,8 @@ public class PlayerMoves : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     public bool isFacingRight;
     protected bool lastFaced;
+    protected Vector3 initialPosition;
+    protected Vector3 deathPosition;
 
     protected virtual void Start()
     {
@@ -59,6 +61,9 @@ public class PlayerMoves : MonoBehaviour
         vidasRestantes = vidasIniciales;
         attackCoolDown = 0;
         spriteRenderer = GetComponent<SpriteRenderer>();
+
+        //posicion inicial
+        puntoVerificador.position = initialPosition;
 
 }
 
@@ -180,6 +185,20 @@ private void Update()
         
     }
     private void Ataque1() {
+        int rotateWithAttack = 0;
+        if (mirandoHacia == 1) { rotateWithAttack = 90;
+            if (!isFacingRight) { rotateWithAttack = -rotateWithAttack; }
+            transform.Rotate(0f, 0f, rotateWithAttack);
+        }
+        if (mirandoHacia == 3)
+        {
+            rotateWithAttack = 270;
+            if (!isFacingRight) { rotateWithAttack = -rotateWithAttack; }
+            transform.Rotate(0f, 0f, rotateWithAttack);
+        }
+        
+
+        animator.SetBool("face_vertical_ing",mirandoHacia == 1 || mirandoHacia == 3);
         animator.SetBool("On_Attack", true);
         animator.SetTrigger("Attack_ing");
         GameObject proyectil = Instantiate(porrazoPrefab, puntoVerificador.position, puntoVerificador.rotation);
@@ -188,10 +207,10 @@ private void Update()
         proyectilScript.scriptPlayer = this;
 
         
-        StartCoroutine(DestroyProjectile(proyectil));
+        StartCoroutine(DestroyProjectile(proyectil, -rotateWithAttack));
     }
 
-    IEnumerator DestroyProjectile(GameObject proyectilToDestroy)
+    IEnumerator DestroyProjectile(GameObject proyectilToDestroy, int antiRotate)
     {
         float startTime = Time.time; // Guarda el tiempo actual
 
@@ -209,6 +228,7 @@ private void Update()
             // Espera hasta la siguiente iteración del bucle
             yield return null;
         }
+        transform.Rotate(0f, 0f, antiRotate);
         animator.SetBool("On_Attack", false);
         Destroy(proyectilToDestroy);
     }
@@ -226,13 +246,13 @@ private void Update()
 
     }
     public void Restart() {
-        transform.position = new Vector3(0,0,0);
-        FlipSprite();
-        Start();
+        transform.position = deathPosition;
+                
     }
 
     public void eliminarVida() {
         vidasRestantes -= 1;
+        animator.SetTrigger("Death");
         if (vidasRestantes <= 0) {
             perder();
         }

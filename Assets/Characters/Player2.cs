@@ -7,17 +7,21 @@ public class Player2 : PlayerMoves
 {
     protected override void Start()
     {
-        base.Start();
         Horizontal = "Horizontalp2";
         Vertical = "Verticalp2";
         Jump = "Jumpp2";
         Fire1 = "Fire1p2";
+
+        initialPosition = new Vector3(9, 0, 0);
+        deathPosition = new Vector3 (3, 10, 0);
 
         //empieza mirando a la izquierda
         FlipSprite();
         isFacingRight = false;
         lastFaced = false;
 
+
+        base.Start();
     }
     
 }
