@@ -47,6 +47,7 @@ public class PorrazoBehaviour : MonoBehaviour
             if (personaje != null && collision.gameObject != deQuienEsAtaque)
             {
                 personaje.recibirGolpe(daño, direc);
+                Destroy(this);
             }
         }
     }

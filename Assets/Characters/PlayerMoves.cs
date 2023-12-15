@@ -21,6 +21,7 @@ public class PlayerMoves : MonoBehaviour
     public byte mirandoHacia;
     private byte lastIzqDer;
 
+    public float dañoInicial = 40f;
     public int vidasIniciales = 3;
     public int vidasRestantes;
     public float dañoAcumulado;
@@ -50,7 +51,7 @@ public class PlayerMoves : MonoBehaviour
     protected virtual void Start()
     {
         jumpCoolDown = 0.02f;
-        dañoAcumulado = 40;
+        dañoAcumulado = dañoInicial;
         mirandoHacia = 0;
         rb = GetComponent<Rigidbody2D>();
         puntoVerificador = GetComponent<Transform>();
@@ -220,6 +221,7 @@ private void Update()
             if (untouchableCoolDown > 0)
             {
                 // Si la variable es verdadera, destruye el proyectil y sale del bucle
+                transform.Rotate(0f, 0f, antiRotate);
                 animator.SetBool("On_Attack", false);
                 Destroy(proyectilToDestroy);
                 yield break; // Sale de la corutina
@@ -247,18 +249,27 @@ private void Update()
     }
     public void Restart() {
         transform.position = deathPosition;
-                
+        rb.velocity = new Vector2(0, 0);
+        dañoAcumulado = dañoInicial;
+
+        //cancela animacion cuando muere
+        animator.SetTrigger("Death");
     }
 
     public void eliminarVida() {
         vidasRestantes -= 1;
-        animator.SetTrigger("Death");
-        if (vidasRestantes <= 0) {
+        if (vidasRestantes <= 0)
+        {
             perder();
         }
-        Restart();
+        else
+        {
+            Restart();
+        }
     }
-    public void perder() { }
+    public void perder() { 
+        
+    }
 
 
 
