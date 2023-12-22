@@ -7,6 +7,8 @@ using UnityEngine;
 
 public class PlayerMoves : MonoBehaviour
 {
+    public Game_manager gameManager;
+
     public string Horizontal;
     public string Vertical;
     public string Jump;
@@ -19,30 +21,26 @@ public class PlayerMoves : MonoBehaviour
 
     //0=derecha  1= arriba  2 = izquierda  3 = derecha
     public byte mirandoHacia;
-    private byte lastIzqDer;
 
     public float dañoInicial = 40f;
-    public int vidasIniciales = 3;
-    public int vidasRestantes;
     public float dañoAcumulado;
     public float ataqueDePersonaje = 1f;
     public float velocidadMovimiento = 17f; // Velocidad de movimiento lateral.
     public float fuerzaSalto = 33f; // Fuerza del salto.
-    public Transform puntoVerificador; // Punto de verificación para detectar el suelo.
+    public Transform p_transform; // Punto de verificación para detectar el suelo.
     public LayerMask capasDeSuelo;
     public LayerMask capasDeJugador;
     public int maxSaltos = 2; // Número máximo de saltos.
     public float maxAttackCoolDown = 1f;
     public GameObject porrazoPrefab;
     public float untouchableCoolDown;
-    public float minUntouchableCoolDown=0.2f;
+    public float minUntouchableCoolDown=0.35f;
     private float attackCoolDown;
     private int saltosRestantes;
     private bool enSuelo = false;
-    private Rigidbody2D rb;
+    public Rigidbody2D rb;
     private float jumpCoolDown;
     private Collider2D otherPlayerCollider;
-    private SpriteRenderer spriteRenderer;
     public bool isFacingRight;
     protected bool lastFaced;
     protected Vector3 initialPosition;
@@ -52,19 +50,18 @@ public class PlayerMoves : MonoBehaviour
     {
         jumpCoolDown = 0.02f;
         dañoAcumulado = dañoInicial;
-        mirandoHacia = 0;
         rb = GetComponent<Rigidbody2D>();
-        puntoVerificador = GetComponent<Transform>();
+        p_transform = GetComponent<Transform>();
         capasDeSuelo = LayerMask.GetMask("Ground");
         capasDeJugador = LayerMask.GetMask("Player");
         saltosRestantes = maxSaltos;
-        nombre = "elbueno";
-        vidasRestantes = vidasIniciales;
         attackCoolDown = 0;
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        minUntouchableCoolDown = 0.35f;
+        //inicializar contador de vidas
+        gameManager.playerJoins(nombre);
 
         //posicion inicial
-        puntoVerificador.position = initialPosition;
+        p_transform.position = initialPosition;
 
 }
 
@@ -74,21 +71,20 @@ private void Update()
         
         // a ver si se mueve lateralmente
         movimientoHorizontal = Input.GetAxisRaw(Horizontal);
-        if (movimientoHorizontal == 1) { mirandoHacia = 0; lastIzqDer = 0; }
-        if (movimientoHorizontal == -1) { mirandoHacia = 2; lastIzqDer = 2; }
+        if (movimientoHorizontal == 1) { mirandoHacia = 0; }
+        if (movimientoHorizontal == -1) { mirandoHacia = 2; }
         movimientoVertical = Input.GetAxisRaw(Vertical);
         if (movimientoVertical == 1) { mirandoHacia = 1; }
         if (movimientoVertical == -1) { mirandoHacia = 3; }
-        if (movimientoHorizontal == 0 && movimientoVertical == 0) { mirandoHacia = lastIzqDer; }
 
         //a ver si esta en el suelo
         enSuelo =  Physics2D.OverlapBox(
-        new Vector2(puntoVerificador.position.x, puntoVerificador.position.y - 0.06f),
-        new Vector2(Math.Abs(puntoVerificador.localScale.x) + 0.03f, Math.Abs(puntoVerificador.localScale.y) + 0.03f),
+        new Vector2(p_transform.position.x, p_transform.position.y - 0.06f),
+        new Vector2(Math.Abs(p_transform.localScale.x) + 0.03f, Math.Abs(p_transform.localScale.y) + 0.03f),
         0, 
         capasDeSuelo);
 
-        Vector2 raycastOrigin = new Vector2(puntoVerificador.position.x, puntoVerificador.position.y - (puntoVerificador.localScale.y / 2) - 3f);
+        Vector2 raycastOrigin = new Vector2(p_transform.position.x, p_transform.position.y - (p_transform.localScale.y / 2) - 3f);
         Vector2 raycastDirection = -Vector2.up;
         RaycastHit2D hit = Physics2D.Raycast(raycastOrigin, raycastDirection, 0.01f, capasDeJugador);
         if (hit.collider != null)
@@ -202,7 +198,7 @@ private void Update()
         animator.SetBool("face_vertical_ing",mirandoHacia == 1 || mirandoHacia == 3);
         animator.SetBool("On_Attack", true);
         animator.SetTrigger("Attack_ing");
-        GameObject proyectil = Instantiate(porrazoPrefab, puntoVerificador.position, puntoVerificador.rotation);
+        GameObject proyectil = Instantiate(porrazoPrefab, p_transform.position, p_transform.rotation);
         PorrazoBehaviour proyectilScript = proyectil.GetComponent<PorrazoBehaviour>();
         proyectilScript.deQuienEsAtaque = this.gameObject;
         proyectilScript.scriptPlayer = this;
@@ -251,24 +247,14 @@ private void Update()
         transform.position = deathPosition;
         rb.velocity = new Vector2(0, 0);
         dañoAcumulado = dañoInicial;
-
+        if (nombre.Equals("p2")) { mirandoHacia = 2; }
         //cancela animacion cuando muere
         animator.SetTrigger("Death");
     }
 
-    public void eliminarVida() {
-        vidasRestantes -= 1;
-        if (vidasRestantes <= 0)
-        {
-            perder();
-        }
-        else
-        {
-            Restart();
-        }
-    }
-    public void perder() { 
-        
+    public void perderVida() {
+        gameManager.vidaMenos(nombre);
+        Restart();
     }
 
 

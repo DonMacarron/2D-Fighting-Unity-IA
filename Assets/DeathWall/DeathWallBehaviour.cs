@@ -12,7 +12,7 @@ public class DeathWallBehaviour : MonoBehaviour
             PlayerMoves personaje = coll.gameObject.GetComponent<PlayerMoves>();
             if (personaje != null)
             {
-                personaje.eliminarVida();
+                personaje.perderVida();
             }
         }
     }

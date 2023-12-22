@@ -14,14 +14,14 @@ public class PorrazoBehaviour : MonoBehaviour
     private void Start() { dondeMira = scriptPlayer.mirandoHacia;
 
         //derecha
-        if (dondeMira == 0) { aSumar =  new Vector3(1, 0, 0); direc = new Vector3(1, 0.5f); }
+        if (dondeMira == 0) { aSumar =  new Vector3(1, 0, 0); direc = new Vector3(1, 0.7f); }
         //arriba
         if (dondeMira == 1) { aSumar =  new Vector3(0, 1f, 0);
             if (scriptPlayer.isFacingRight) { direc = new Vector3(0.3f, 1); }
             else { direc = new Vector3(-0.3f,1); }
              }
         //izquierda
-        if (dondeMira == 2) { aSumar = new Vector3(-1, 0, 0); direc = new Vector3(-1, 1); }
+        if (dondeMira == 2) { aSumar = new Vector3(-1, 0, 0); direc = new Vector3(-1, 0.7f); }
         //abajo
         if (dondeMira == 3) { aSumar =  new Vector3(0, -1f, 0);
             if (scriptPlayer.isFacingRight) { direc = new Vector3(0.6f, -1.5f); }

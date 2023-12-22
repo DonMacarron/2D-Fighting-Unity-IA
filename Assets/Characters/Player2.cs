@@ -11,11 +11,11 @@ public class Player2 : PlayerMoves
         Vertical = "Verticalp2";
         Jump = "Jumpp2";
         Fire1 = "Fire1p2";
-
+        nombre = "Player 2";
         initialPosition = new Vector3(9, 0, 0);
         deathPosition = new Vector3 (3, 10, 0);
+        mirandoHacia = 2;
 
-        //empieza mirando a la izquierda
         FlipSprite();
         isFacingRight = false;
         lastFaced = false;

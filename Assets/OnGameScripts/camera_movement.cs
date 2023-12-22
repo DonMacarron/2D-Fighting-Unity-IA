@@ -10,7 +10,7 @@ public class camera_movement : MonoBehaviour
     private Transform p1_trans;
     private Transform p2_trans;
     public Transform transform;
-    public Camera camera;
+    public Camera My_camera;
     private bool over;
     private float distancia;
     public float no_biggerx;
@@ -34,7 +34,7 @@ public class camera_movement : MonoBehaviour
         p1_trans = p1.transform;
         p2_trans = p2.transform;
         transform = GetComponent<Transform>();
-        camera = GetComponent<Camera>();
+        My_camera = GetComponent<Camera>();
         transform.localPosition = new Vector3(0, 0,-1);
         no_biggerx = 7.0f;
         no_biggery = 1;
@@ -86,12 +86,15 @@ public class camera_movement : MonoBehaviour
             }
             
 
-            camera.orthographicSize = distancia ;
+            My_camera.orthographicSize = distancia ;
             transform.localPosition = new_pos;
 
 
         }
-        else { transform.localPosition = new Vector3(0, 0, -1); }
+        else { transform.localPosition = new Vector3(0, 0, -1);
+            My_camera.orthographicSize = 20f;
+        
+        }
     }
 
     public void isOver()

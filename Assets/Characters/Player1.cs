@@ -12,10 +12,12 @@ public class Player1 : PlayerMoves
         Vertical = "Vertical";
         Jump = "Jump";
         Fire1 = "Fire1";
-        isFacingRight = true;
+        nombre = "Player 1";
+        initialPosition = new Vector3(-9, 0, 0);
+        deathPosition = new Vector3(-3, 10, 0);
+        mirandoHacia = 0;
         lastFaced = true;
-        initialPosition = new Vector3(-9,0,0);
-        deathPosition = new Vector3(-3,10,0);
+        isFacingRight = false;
         base.Start();
     }
 }
