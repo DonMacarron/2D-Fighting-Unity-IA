@@ -10,13 +10,13 @@ public class MainMenu : MonoBehaviour
     }
     public void PlayerVsBot()
     {
-        loader.LoadSceneInstant("");
+        loader.LoadSceneInstant("LIVESNUMBER");
     }
     public void BotVsBot() {
-        loader.LoadSceneInstant("");
+        loader.LoadSceneInstant("LIVESNUMBER");
     }
     public void Settings() {
-        loader.LoadSceneInstant("");
+        loader.LoadSceneInstant("LIVESNUMBER");
     }
 
     public void Exit() {

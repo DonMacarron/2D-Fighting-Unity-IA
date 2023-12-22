@@ -25,6 +25,9 @@ public class LivesMenu : MonoBehaviour
         loader.LoadScene("Fight_pvp");
         
     }
+    public void Back() {
+        loader.LoadSceneInstant("INDEXSCENE");
+    }
 
     public void livesUpdate(float n) {
         nn = (int)((n*10)-n) + 1;
