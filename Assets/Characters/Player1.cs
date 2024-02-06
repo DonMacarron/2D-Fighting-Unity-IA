@@ -15,9 +15,12 @@ public class Player1 : PlayerMoves
         nombre = "Player 1";
         initialPosition = new Vector3(-9, 0, 0);
         deathPosition = new Vector3(-3, 10, 0);
-        mirandoHacia = 0;
-        lastFaced = true;
-        isFacingRight = false;
+
+        isFacingRight = true;
+        lastFaced = false;
+
+        FlipSprite();
+
         base.Start();
     }
 }

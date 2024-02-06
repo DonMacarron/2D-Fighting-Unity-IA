@@ -8,7 +8,7 @@ public class Scroller : MonoBehaviour
 {
     public float speed;
 
-    [SerializeField] private Renderer renderer;
+    [SerializeField] new private Renderer renderer;
 
     void Update() {
         renderer.material.mainTextureOffset += new Vector2(speed * Time.deltaTime,0);

@@ -9,7 +9,7 @@ public class camera_movement : MonoBehaviour
     public GameObject p2; 
     private Transform p1_trans;
     private Transform p2_trans;
-    public Transform transform;
+    new public Transform transform;
     public Camera My_camera;
     private bool over;
     private float distancia;
@@ -46,7 +46,7 @@ public class camera_movement : MonoBehaviour
         if (!over)
         {
 
-            Vector3 new_pos = (p1_trans.position + p2_trans.position) / 2.0f + new Vector3(0,0,-1);
+            Vector3 new_pos = (p1_trans.position + p2_trans.position) / 2.0f + new Vector3(0,0,-5);
 
             float d1 = p1_trans.position.x - p2_trans.position.x;
             d1 = d1 * d1;

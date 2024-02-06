@@ -13,12 +13,10 @@ public class Player2 : PlayerMoves
         Fire1 = "Fire1p2";
         nombre = "Player 2";
         initialPosition = new Vector3(9, 0, 0);
-        deathPosition = new Vector3 (3, 10, 0);
-        mirandoHacia = 2;
+        deathPosition = new Vector3(3, 10, 0);
 
-        FlipSprite();
         isFacingRight = false;
-        lastFaced = false;
+        lastFaced = true;
 
 
         base.Start();

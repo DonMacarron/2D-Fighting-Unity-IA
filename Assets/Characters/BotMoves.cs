@@ -6,74 +6,19 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerMoves : MonoBehaviour
+public class BotMoves : PlayerMoves
 {
-    public Game_manager gameManager;
+    public BotGOAP goap;
 
-    public string Horizontal;
-    public string Vertical;
-    public string Jump;
-    public string Fire1;
-    public Animator animator;
-
-    public float movimientoHorizontal;
-    public float movimientoVertical;
-    public string nombre;
-
-    //0=derecha  1= arriba  2 = izquierda  3 = derecha
-    public byte mirandoHacia;
-
-    public float dañoInicial = 40f;
-    public float dañoAcumulado;
-    public float ataqueDePersonaje = 1f;
-    public float velocidadMovimiento = 17f; // Velocidad de movimiento lateral.
-    public float fuerzaSalto = 33f; // Fuerza del salto.
-    public Transform p_transform; // Punto de verificación para detectar el suelo.
-    public LayerMask capasDeSuelo;
-    public LayerMask capasDeJugador;
-    public int maxSaltos = 2; // Número máximo de saltos.
-    public float maxAttackCoolDown = 1f;
-    public GameObject porrazoPrefab;
-    public float untouchableCoolDown;
-    public float minUntouchableCoolDown=0.35f;
-    protected float attackCoolDown;
-    protected int saltosRestantes;
-    protected bool enSuelo = false;
-    public Rigidbody2D rb;
-    protected float jumpCoolDown;
-    protected Collider2D otherPlayerCollider;
-    public bool isFacingRight;
-    protected bool lastFaced;
-    protected Vector3 initialPosition;
-    protected Vector3 deathPosition;
-    public TextMeshProUGUI healthText;
-    protected virtual void Start()
-    {
-        jumpCoolDown = 0.02f;
-        dañoAcumulado = dañoInicial;
-        rb = GetComponent<Rigidbody2D>();
-        p_transform = GetComponent<Transform>();
-        capasDeSuelo = LayerMask.GetMask("Ground");
-        capasDeJugador = LayerMask.GetMask("Player");
-        saltosRestantes = maxSaltos;
-        attackCoolDown = 0;
-        minUntouchableCoolDown = 0.35f;
-        //inicializar contador de vidas
-        gameManager.playerJoins(nombre);
-
-        //posicion inicial
-        p_transform.position = initialPosition;
-        healthText.text = "0";
-}
 
     private void Update()
     {
 
         // a ver si se mueve lateralmente
-        movimientoHorizontal = Input.GetAxisRaw(Horizontal);
+        movimientoHorizontal = goap.getHorizontalMovement();
         if (movimientoHorizontal == 1) { mirandoHacia = 0; }
         if (movimientoHorizontal == -1) { mirandoHacia = 2; }
-        movimientoVertical = Input.GetAxisRaw(Vertical);
+        movimientoVertical = goap.getVerticaltalMovement();
         if (movimientoVertical == 1) { mirandoHacia = 1; }
         if (movimientoVertical == -1) { mirandoHacia = 3; }
         if (movimientoHorizontal == 0 && movimientoVertical == 0) {
@@ -106,11 +51,11 @@ public class PlayerMoves : MonoBehaviour
         }
         else { if (saltosRestantes > 1) { saltosRestantes = 1; } }
 
-        if (Input.GetButtonDown(Jump) && jumpCoolDown<0)
+        if (goap.getJump() && jumpCoolDown<0)
         {
             Saltar();
         }
-        if (Input.GetButtonDown(Fire1) && attackCoolDown<0 && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0) { 
+        if (goap.getAtack() && attackCoolDown<0 && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0) { 
             Atacar1();
         }
 
@@ -203,7 +148,7 @@ public class PlayerMoves : MonoBehaviour
         animator.SetBool("On_Attack", true);
         animator.SetTrigger("Attack_ing");
         GameObject proyectil = Instantiate(porrazoPrefab, p_transform.position, p_transform.rotation);
-        PorrazoBehaviour proyectilScript = proyectil.GetComponent<PorrazoBehaviour>();
+        BotPorrazoBehaviour proyectilScript = proyectil.GetComponent<BotPorrazoBehaviour>();
         proyectilScript.deQuienEsAtaque = this.gameObject;
         proyectilScript.scriptPlayer = this;
 
