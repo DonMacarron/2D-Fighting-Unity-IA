@@ -434,6 +434,8 @@ MonoBehaviour:
   Jump: 
   Fire1: 
   animator: {fileID: 169439994}
+  movimientoHorizontal: 0
+  movimientoVertical: 0
   nombre: 
   mirandoHacia: 0
   "da\xF1oInicial": 40
@@ -453,8 +455,16 @@ MonoBehaviour:
   porrazoPrefab: {fileID: 8190742408209849357, guid: 21db7016a25956f4b84c46c2b16c5283, type: 3}
   untouchableCoolDown: 0
   minUntouchableCoolDown: 0.4
+  attackCoolDown: 0
+  saltosRestantes: 0
+  enSuelo: 0
   rb: {fileID: 169439989}
+  jumpCoolDown: 0
+  otherPlayerCollider: {fileID: 0}
   isFacingRight: 0
+  lastFaced: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  deathPosition: {x: 0, y: 0, z: 0}
   healthText: {fileID: 294356883}
 --- !u!95 &169439994
 Animator:
@@ -495,8 +505,8 @@ GameObject:
   - component: {fileID: 253915130}
   - component: {fileID: 253915135}
   - component: {fileID: 253915136}
-  - component: {fileID: 253915137}
   - component: {fileID: 253915138}
+  - component: {fileID: 253915137}
   m_Layer: 7
   m_Name: Player2
   m_TagString: Player
@@ -676,16 +686,66 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 054126641dfa08c409cbdc0cff937538, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jugador: {fileID: 169439988}
-  bot: {fileID: 253915128}
-  playerPos: {x: 0, y: 0, z: 0}
-  playerHealth: 0
-  playerLostLives: 0
-  playerIsAtacking: 0
-  playerOnGround: 0
-  playerIsStunned: 0
-  distanceX: 0
-  distanceY: 0
+  onEvolution: 1
+  enemigo: {fileID: 169439993}
+  bot: {fileID: 253915138}
+  randHorizontal: 0
+  randVertical: 0
+  randJump: 0
+  randAttack: 0
+  factArray: []
+  horizontalWeights:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  verticalWeights:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  jumpWeights:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  attackWeights:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
 --- !u!114 &253915138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -704,6 +764,8 @@ MonoBehaviour:
   Jump: 
   Fire1: 
   animator: {fileID: 253915135}
+  movimientoHorizontal: 0
+  movimientoVertical: 0
   nombre: 
   mirandoHacia: 0
   "da\xF1oInicial": 40
@@ -723,8 +785,16 @@ MonoBehaviour:
   porrazoPrefab: {fileID: 8190742408209849357, guid: 594bc3a099ff41f4891094e8f7d12f85, type: 3}
   untouchableCoolDown: 0
   minUntouchableCoolDown: 0.35
+  attackCoolDown: 0
+  saltosRestantes: 0
+  enSuelo: 0
   rb: {fileID: 253915130}
+  jumpCoolDown: 0
+  otherPlayerCollider: {fileID: 0}
   isFacingRight: 0
+  lastFaced: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  deathPosition: {x: 0, y: 0, z: 0}
   healthText: {fileID: 260464855}
   goap: {fileID: 253915137}
 --- !u!1 &260464853

@@ -36,16 +36,16 @@ public class PlayerMoves : MonoBehaviour
     public GameObject porrazoPrefab;
     public float untouchableCoolDown;
     public float minUntouchableCoolDown=0.35f;
-    protected float attackCoolDown;
-    protected int saltosRestantes;
-    protected bool enSuelo = false;
+    public float attackCoolDown;
+    public int saltosRestantes;
+    public bool enSuelo = false;
     public Rigidbody2D rb;
-    protected float jumpCoolDown;
-    protected Collider2D otherPlayerCollider;
+    public float jumpCoolDown;
+    public Collider2D otherPlayerCollider;
     public bool isFacingRight;
-    protected bool lastFaced;
-    protected Vector3 initialPosition;
-    protected Vector3 deathPosition;
+    public bool lastFaced;
+    public Vector3 initialPosition;
+    public Vector3 deathPosition;
     public TextMeshProUGUI healthText;
     protected virtual void Start()
     {
@@ -114,10 +114,12 @@ public class PlayerMoves : MonoBehaviour
             Atacar1();
         }
 
-        attackCoolDown -= Time.deltaTime;
-        untouchableCoolDown -= Time.deltaTime;
-        jumpCoolDown -= Time.deltaTime;
-
+        if (attackCoolDown > -1)
+            attackCoolDown -= Time.deltaTime;
+        if (untouchableCoolDown > -1)
+            untouchableCoolDown -= Time.deltaTime;
+        if (jumpCoolDown > -1)
+            jumpCoolDown -= Time.deltaTime;
 
         //animaciones
         if (movimientoHorizontal > 0.5)

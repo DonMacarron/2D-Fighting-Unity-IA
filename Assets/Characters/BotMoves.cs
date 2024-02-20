@@ -51,17 +51,19 @@ public class BotMoves : PlayerMoves
         }
         else { if (saltosRestantes > 1) { saltosRestantes = 1; } }
 
-        if (goap.getJump() && jumpCoolDown<0)
+        if (goap.getJump() && jumpCoolDown<0 && saltosRestantes<0)
         {
             Saltar();
         }
-        if (goap.getAtack() && attackCoolDown<0 && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0) { 
+        if (goap.getAttack() && attackCoolDown<0 && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0) { 
             Atacar1();
         }
-
-        attackCoolDown -= Time.deltaTime;
-        untouchableCoolDown -= Time.deltaTime;
-        jumpCoolDown -= Time.deltaTime;
+        if(attackCoolDown>-1)
+            attackCoolDown -= Time.deltaTime;
+        if(untouchableCoolDown>-1)
+            untouchableCoolDown -= Time.deltaTime;
+        if(jumpCoolDown>-1)
+            jumpCoolDown -= Time.deltaTime;
 
 
         //animaciones
