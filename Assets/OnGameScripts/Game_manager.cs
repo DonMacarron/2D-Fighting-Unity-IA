@@ -28,6 +28,7 @@ public class Game_manager : MonoBehaviour
         if (!isOver) {
             if (vidasJugadores[nombreJugador] != -5)
             {
+
                 vidasJugadores[nombreJugador] = vidasJugadores[nombreJugador] - 1;
                 if (vidasJugadores[nombreJugador] <= 0) { vidasJugadores.Remove(nombreJugador); }
                 if (vidasJugadores.Count == 1)

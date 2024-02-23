@@ -37,7 +37,7 @@ public class PlayerMoves : MonoBehaviour
     public float untouchableCoolDown;
     public float minUntouchableCoolDown=0.35f;
     public float attackCoolDown;
-    public int saltosRestantes;
+    public int jumpsLeft;
     public bool enSuelo = false;
     public Rigidbody2D rb;
     public float jumpCoolDown;
@@ -55,7 +55,7 @@ public class PlayerMoves : MonoBehaviour
         p_transform = GetComponent<Transform>();
         capasDeSuelo = LayerMask.GetMask("Ground");
         capasDeJugador = LayerMask.GetMask("Player");
-        saltosRestantes = maxSaltos;
+        jumpsLeft = maxSaltos;
         attackCoolDown = 0;
         minUntouchableCoolDown = 0.35f;
         //inicializar contador de vidas
@@ -102,9 +102,9 @@ public class PlayerMoves : MonoBehaviour
 
         if (enSuelo)
         {
-            saltosRestantes = maxSaltos;
+            jumpsLeft = maxSaltos;
         }
-        else { if (saltosRestantes > 1) { saltosRestantes = 1; } }
+        else { if (jumpsLeft > 1) { jumpsLeft = 1; } }
 
         if (Input.GetButtonDown(Jump) && jumpCoolDown<0)
         {
@@ -166,17 +166,17 @@ public class PlayerMoves : MonoBehaviour
     //salto
     private void Saltar()
     {
-        if (saltosRestantes >= 2)
+        if (jumpsLeft >= 2)
         {
             rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
             animator.SetTrigger("Jump_ing");
         }
-        if (saltosRestantes == 1)
+        if (jumpsLeft == 1)
         {
             rb.velocity = new Vector2(rb.velocity.x, (float)(fuerzaSalto));
             animator.SetTrigger("Double_Jump_ing");
         }
-        saltosRestantes--;
+        jumpsLeft--;
         jumpCoolDown = 0.05f;
     }
 
@@ -188,7 +188,7 @@ public class PlayerMoves : MonoBehaviour
             attackCoolDown = maxAttackCoolDown;
         
     }
-    private void Ataque1() {
+    protected virtual void Ataque1() {
         int rotateWithAttack = 0;
         if (mirandoHacia == 1) { rotateWithAttack = 90;
             if (!isFacingRight) { rotateWithAttack = -rotateWithAttack; }
@@ -213,7 +213,7 @@ public class PlayerMoves : MonoBehaviour
         StartCoroutine(DestroyProjectile(proyectil, -rotateWithAttack));
     }
 
-    IEnumerator DestroyProjectile(GameObject proyectilToDestroy, int antiRotate)
+    protected IEnumerator DestroyProjectile(GameObject proyectilToDestroy, int antiRotate)
     {
         float startTime = Time.time; // Guarda el tiempo actual
 
@@ -264,7 +264,13 @@ public class PlayerMoves : MonoBehaviour
         healthText.text = "0";
     }
 
-    public void perderVida() {
+    public virtual void perderVida() {
+        BotMoves enemybot = otherPlayerCollider.gameObject.GetComponent<BotMoves>();
+
+        if ( enemybot!= null) {
+            enemybot.enemyKilled();
+        }
+
         gameManager.vidaMenos(nombre);
         Restart();
     }

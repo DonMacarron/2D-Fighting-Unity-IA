@@ -8,17 +8,18 @@ using UnityEngine.UI;
 
 public class BotMoves : PlayerMoves
 {
-    public BotGOAP goap;
+    bool jumpOrder = false;
+    bool attackOrder = false;
 
+    public FirstAgent Agent;
 
     private void Update()
     {
 
         // a ver si se mueve lateralmente
-        movimientoHorizontal = goap.getHorizontalMovement();
+        
         if (movimientoHorizontal == 1) { mirandoHacia = 0; }
         if (movimientoHorizontal == -1) { mirandoHacia = 2; }
-        movimientoVertical = goap.getVerticaltalMovement();
         if (movimientoVertical == 1) { mirandoHacia = 1; }
         if (movimientoVertical == -1) { mirandoHacia = 3; }
         if (movimientoHorizontal == 0 && movimientoVertical == 0) {
@@ -47,15 +48,16 @@ public class BotMoves : PlayerMoves
 
         if (enSuelo)
         {
-            saltosRestantes = maxSaltos;
+            jumpsLeft = maxSaltos;
         }
-        else { if (saltosRestantes > 1) { saltosRestantes = 1; } }
+        else { if (jumpsLeft > 1) { jumpsLeft = 1; } }
 
-        if (goap.getJump() && jumpCoolDown<0 && saltosRestantes<0)
+
+        if (jumpOrder && jumpCoolDown<0 && jumpsLeft>0)
         {
             Saltar();
         }
-        if (goap.getAttack() && attackCoolDown<0 && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0) { 
+        if (attackOrder && attackCoolDown<0 && untouchableCoolDown - (untouchableCoolDown / 2f) <= 0) { 
             Atacar1();
         }
         if(attackCoolDown>-1)
@@ -111,17 +113,19 @@ public class BotMoves : PlayerMoves
     //salto
     private void Saltar()
     {
-        if (saltosRestantes >= 2)
+        if (jumpsLeft >= 2)
         {
+
+
             rb.velocity = new Vector2(rb.velocity.x, fuerzaSalto);
             animator.SetTrigger("Jump_ing");
         }
-        if (saltosRestantes == 1)
+        if (jumpsLeft == 1)
         {
             rb.velocity = new Vector2(rb.velocity.x, (float)(fuerzaSalto));
             animator.SetTrigger("Double_Jump_ing");
         }
-        saltosRestantes--;
+        jumpsLeft--;
         jumpCoolDown = 0.05f;
     }
 
@@ -133,7 +137,7 @@ public class BotMoves : PlayerMoves
             attackCoolDown = maxAttackCoolDown;
         
     }
-    private void Ataque1() {
+    protected override void Ataque1() {
         int rotateWithAttack = 0;
         if (mirandoHacia == 1) { rotateWithAttack = 90;
             if (!isFacingRight) { rotateWithAttack = -rotateWithAttack; }
@@ -155,73 +159,40 @@ public class BotMoves : PlayerMoves
         proyectilScript.scriptPlayer = this;
 
         
-        StartCoroutine(DestroyProjectile(proyectil, -rotateWithAttack));
+        StartCoroutine(base.DestroyProjectile(proyectil, -rotateWithAttack));
     }
 
-    IEnumerator DestroyProjectile(GameObject proyectilToDestroy, int antiRotate)
-    {
-        float startTime = Time.time; // Guarda el tiempo actual
-
-        while (Time.time - startTime < 0.2f)
-        {
-            // Verifica si stunned
-            if (untouchableCoolDown > 0)
-            {
-                // Si la variable es verdadera, destruye el proyectil y sale del bucle
-                transform.Rotate(0f, 0f, antiRotate);
-                animator.SetBool("On_Attack", false);
-                Destroy(proyectilToDestroy);
-                yield break; // Sale de la corutina
-            }
-
-            // Espera hasta la siguiente iteración del bucle
-            yield return null;
-        }
-        transform.Rotate(0f, 0f, antiRotate);
-        animator.SetBool("On_Attack", false);
-        Destroy(proyectilToDestroy);
-    }
-    public void recibirGolpe(float daño, Vector2 direccion) {
-        attackCoolDown = 0;
-        rb.velocity = new Vector2(0, 0);
-
-        dañoAcumulado += daño;
-        direccion.Normalize();
-        rb.AddForce(direccion * dañoAcumulado, ForceMode2D.Impulse);
-        untouchableCoolDown = minUntouchableCoolDown + (dañoAcumulado*0.0008f);
-
-        //animator
-        animator.SetTrigger("Hit");
-
-        //vida en pantalla
-        healthText.text = ""+ (dañoAcumulado - dañoInicial);
-
-    }
-    public void Restart() {
-        transform.position = deathPosition;
-        rb.velocity = new Vector2(0, 0);
-        dañoAcumulado = dañoInicial;
-        if (nombre.Equals("p2")) { mirandoHacia = 2; }
-        //cancela animacion cuando muere
-        animator.SetTrigger("Death");
-
-        //vida en pantalla
-        healthText.text = "0";
-    }
-
-    public void perderVida() {
+    public override void perderVida() {
         gameManager.vidaMenos(nombre);
+
+        //IA
+        Debug.Log("Pierdo  vida");
+        Agent.lifeLostReward();
+
         Restart();
     }
-
-
-
-    public void FlipSprite()
-    {  
-        Vector2 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
-
+    public void enemyKilled() { Agent.enemyKillReward(); }
+    public void setHorizontal(int h)
+    {
+        if (h == 0) { movimientoHorizontal = -1; }
+        else { if (h == 2) { movimientoHorizontal = 1; }
+            else { movimientoHorizontal = 0;  } }
     }
+    public void setVertical(int v)
+    {
+        if (v == 0) { movimientoVertical = -1; }
+        else
+        {
+            if (v == 2) { movimientoVertical = 1; }
+            else { movimientoVertical = 0; }
+        }
+    }
+    public void setJump(bool j)
+    {
+        jumpOrder = j; 
+    }
+    public void setAttack(bool a) {  attackOrder = a;}
+
+
 }
 

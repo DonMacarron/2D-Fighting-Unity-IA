@@ -456,11 +456,11 @@ MonoBehaviour:
   untouchableCoolDown: 0
   minUntouchableCoolDown: 0.4
   attackCoolDown: 0
-  saltosRestantes: 0
+  jumpsLeft: 0
   enSuelo: 0
   rb: {fileID: 169439989}
   jumpCoolDown: 0
-  otherPlayerCollider: {fileID: 0}
+  otherPlayerCollider: {fileID: 253915131}
   isFacingRight: 0
   lastFaced: 0
   initialPosition: {x: 0, y: 0, z: 0}
@@ -506,7 +506,9 @@ GameObject:
   - component: {fileID: 253915135}
   - component: {fileID: 253915136}
   - component: {fileID: 253915138}
-  - component: {fileID: 253915137}
+  - component: {fileID: 253915140}
+  - component: {fileID: 253915139}
+  - component: {fileID: 253915141}
   m_Layer: 7
   m_Name: Player2
   m_TagString: Player
@@ -674,78 +676,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &253915137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 253915128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 054126641dfa08c409cbdc0cff937538, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  onEvolution: 1
-  enemigo: {fileID: 169439993}
-  bot: {fileID: 253915138}
-  randHorizontal: 0
-  randVertical: 0
-  randJump: 0
-  randAttack: 0
-  factArray: []
-  horizontalWeights:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  verticalWeights:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  jumpWeights:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  attackWeights:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
 --- !u!114 &253915138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -786,17 +716,82 @@ MonoBehaviour:
   untouchableCoolDown: 0
   minUntouchableCoolDown: 0.35
   attackCoolDown: 0
-  saltosRestantes: 0
+  jumpsLeft: 0
   enSuelo: 0
   rb: {fileID: 253915130}
   jumpCoolDown: 0
-  otherPlayerCollider: {fileID: 0}
+  otherPlayerCollider: {fileID: 169439990}
   isFacingRight: 0
   lastFaced: 0
   initialPosition: {x: 0, y: 0, z: 0}
   deathPosition: {x: 0, y: 0, z: 0}
   healthText: {fileID: 260464855}
-  goap: {fileID: 253915137}
+  Agent: {fileID: 253915139}
+--- !u!114 &253915139
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253915128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11d4b3208b9580342ace949cd196ff05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  agentParameters:
+    maxStep: 0
+  hasUpgradedFromAgentParameters: 1
+  MaxStep: 0
+  enemyPos: {fileID: 169439992}
+  BotMoves: {fileID: 253915138}
+  hitRewardAmount: 1
+  lifeLostRewardAmount: -1
+  enemyKillRewardAmount: 2
+--- !u!114 &253915140
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253915128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d1c4e0b1822b495aa52bc52839ecb30, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_BrainParameters:
+    VectorObservationSize: 7
+    NumStackedVectorObservations: 1
+    m_ActionSpec:
+      m_NumContinuousActions: 0
+      BranchSizes: 03000000030000000200000002000000
+    VectorActionSize: 03000000030000000200000002000000
+    VectorActionDescriptions: []
+    VectorActionSpaceType: 0
+    hasUpgradedBrainParametersWithActionSpec: 1
+  m_Model: {fileID: 0}
+  m_InferenceDevice: 0
+  m_BehaviorType: 0
+  m_BehaviorName: Fight_FewData
+  TeamId: 0
+  m_UseChildSensors: 1
+  m_UseChildActuators: 1
+  m_ObservableAttributeHandling: 0
+--- !u!114 &253915141
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253915128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a5c9d521e5ef4759a8246a07d52221e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DecisionPeriod: 5
+  TakeActionsBetweenDecisions: 1
 --- !u!1 &260464853
 GameObject:
   m_ObjectHideFlags: 0

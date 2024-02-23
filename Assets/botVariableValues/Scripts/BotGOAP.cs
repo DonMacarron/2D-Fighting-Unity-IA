@@ -78,8 +78,8 @@ public class BotGOAP : MonoBehaviour
         factArray[7] = enemigo.untouchableCoolDown;
         factArray[8] = bot.attackCoolDown;
         factArray[9] = enemigo.attackCoolDown;
-        factArray[10] = bot.saltosRestantes;
-        factArray[11] = enemigo.saltosRestantes;
+        factArray[10] = bot.jumpsLeft;
+        factArray[11] = enemigo.jumpsLeft;
         string x = "";
         for (int i = 0;i< FactNumber;i++) { x += factArray[i] + "xxxxx"; }
         Debug.Log(x);

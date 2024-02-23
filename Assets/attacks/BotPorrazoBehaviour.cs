@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BotPorrazoBehaviour : MonoBehaviour
@@ -11,7 +12,8 @@ public class BotPorrazoBehaviour : MonoBehaviour
     private Vector3 aSumar;
     private Vector2 direc;
 
-    private void Start() { dondeMira = scriptPlayer.mirandoHacia;
+    private void Start() {
+        dondeMira = scriptPlayer.mirandoHacia;
 
         //derecha
         if (dondeMira == 0) { aSumar =  new Vector3(1, 0, 0); direc = new Vector3(1, 0.7f); }
@@ -47,6 +49,7 @@ public class BotPorrazoBehaviour : MonoBehaviour
             if (personaje != null && collision.gameObject != deQuienEsAtaque)
             {
                 personaje.recibirGolpe(daño, direc);
+                scriptPlayer.Agent.hitReward();
                 Destroy(this);
             }
         }
