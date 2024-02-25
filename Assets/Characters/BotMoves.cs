@@ -2,18 +2,17 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.MLAgents;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BotMoves : PlayerMoves
+public abstract class BotMoves : PlayerMoves
 {
-    bool jumpOrder = false;
-    bool attackOrder = false;
+    protected bool jumpOrder = false;
+    protected bool attackOrder = false;
 
-    public FirstAgent Agent;
-
-    private void Update()
+    public virtual void Update()
     {
 
         // a ver si se mueve lateralmente
@@ -111,7 +110,7 @@ public class BotMoves : PlayerMoves
     }
 
     //salto
-    private void Saltar()
+    protected void Saltar()
     {
         if (jumpsLeft >= 2)
         {
@@ -131,7 +130,7 @@ public class BotMoves : PlayerMoves
 
 
     //pegar
-    private void Atacar1() {
+    protected void Atacar1() {
         
             Ataque1();
             attackCoolDown = maxAttackCoolDown;
@@ -167,11 +166,9 @@ public class BotMoves : PlayerMoves
 
         //IA
         Debug.Log("Pierdo  vida");
-        Agent.lifeLostReward();
 
         Restart();
     }
-    public void enemyKilled() { Agent.enemyKillReward(); }
     public void setHorizontal(int h)
     {
         if (h == 0) { movimientoHorizontal = -1; }
@@ -193,6 +190,9 @@ public class BotMoves : PlayerMoves
     }
     public void setAttack(bool a) {  attackOrder = a;}
 
+    public abstract void enemyKilled();
+    public abstract void enemyHit();
+    public abstract int getJumpsLeft();
 
 }
 

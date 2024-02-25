@@ -505,7 +505,7 @@ GameObject:
   - component: {fileID: 253915130}
   - component: {fileID: 253915135}
   - component: {fileID: 253915136}
-  - component: {fileID: 253915138}
+  - component: {fileID: 253915142}
   - component: {fileID: 253915140}
   - component: {fileID: 253915139}
   - component: {fileID: 253915141}
@@ -676,57 +676,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &253915138
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 253915128}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1915b489b24af047916f750b3e2c95c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gameManager: {fileID: 2099768115}
-  Horizontal: 
-  Vertical: 
-  Jump: 
-  Fire1: 
-  animator: {fileID: 253915135}
-  movimientoHorizontal: 0
-  movimientoVertical: 0
-  nombre: 
-  mirandoHacia: 0
-  "da\xF1oInicial": 40
-  "da\xF1oAcumulado": 0
-  ataqueDePersonaje: 1
-  velocidadMovimiento: 17
-  fuerzaSalto: 33
-  p_transform: {fileID: 253915133}
-  capasDeSuelo:
-    serializedVersion: 2
-    m_Bits: 8
-  capasDeJugador:
-    serializedVersion: 2
-    m_Bits: 128
-  maxSaltos: 2
-  maxAttackCoolDown: 1
-  porrazoPrefab: {fileID: 8190742408209849357, guid: 594bc3a099ff41f4891094e8f7d12f85, type: 3}
-  untouchableCoolDown: 0
-  minUntouchableCoolDown: 0.35
-  attackCoolDown: 0
-  jumpsLeft: 0
-  enSuelo: 0
-  rb: {fileID: 253915130}
-  jumpCoolDown: 0
-  otherPlayerCollider: {fileID: 169439990}
-  isFacingRight: 0
-  lastFaced: 0
-  initialPosition: {x: 0, y: 0, z: 0}
-  deathPosition: {x: 0, y: 0, z: 0}
-  healthText: {fileID: 260464855}
-  Agent: {fileID: 253915139}
 --- !u!114 &253915139
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -744,7 +693,7 @@ MonoBehaviour:
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
   enemyPos: {fileID: 169439992}
-  BotMoves: {fileID: 253915138}
+  BotMoves: {fileID: 253915142}
   hitRewardAmount: 1
   lifeLostRewardAmount: -1
   enemyKillRewardAmount: 2
@@ -792,6 +741,57 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DecisionPeriod: 5
   TakeActionsBetweenDecisions: 1
+--- !u!114 &253915142
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 253915128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b0a4fc472dae824080d98bcc941f3a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameManager: {fileID: 2099768115}
+  Horizontal: 
+  Vertical: 
+  Jump: 
+  Fire1: 
+  animator: {fileID: 253915135}
+  movimientoHorizontal: 0
+  movimientoVertical: 0
+  nombre: 
+  mirandoHacia: 0
+  "da\xF1oInicial": 40
+  "da\xF1oAcumulado": 0
+  ataqueDePersonaje: 1
+  velocidadMovimiento: 17
+  fuerzaSalto: 33
+  p_transform: {fileID: 0}
+  capasDeSuelo:
+    serializedVersion: 2
+    m_Bits: 0
+  capasDeJugador:
+    serializedVersion: 2
+    m_Bits: 0
+  maxSaltos: 2
+  maxAttackCoolDown: 1
+  porrazoPrefab: {fileID: 8190742408209849357, guid: 594bc3a099ff41f4891094e8f7d12f85, type: 3}
+  untouchableCoolDown: 0
+  minUntouchableCoolDown: 0.35
+  attackCoolDown: 0
+  jumpsLeft: 0
+  enSuelo: 0
+  rb: {fileID: 0}
+  jumpCoolDown: 0
+  otherPlayerCollider: {fileID: 169439990}
+  isFacingRight: 0
+  lastFaced: 0
+  initialPosition: {x: 0, y: 0, z: 0}
+  deathPosition: {x: 0, y: 0, z: 0}
+  healthText: {fileID: 260464855}
+  Agent: {fileID: 253915139}
 --- !u!1 &260464853
 GameObject:
   m_ObjectHideFlags: 0

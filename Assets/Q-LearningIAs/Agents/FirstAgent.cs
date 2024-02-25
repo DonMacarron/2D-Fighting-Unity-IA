@@ -11,27 +11,31 @@ public class FirstAgent : Agent
     [SerializeField] private Transform enemyPos;
     public BotMoves BotMoves;
 
-    public float hitRewardAmount = 0.5f;
+    public float hitRewardAmount = 1f;
     public float lifeLostRewardAmount = -2f;
-    public float enemyKillRewardAmount = 2f;
+    public float enemyKillRewardAmount = 0.1f;
 
     public override void CollectObservations(VectorSensor sensor)
     {
+        Debug.Log("Observation received");
         sensor.AddObservation(this.transform.localPosition);
         sensor.AddObservation(enemyPos.localPosition);
-        sensor.AddObservation(BotMoves.jumpsLeft);
+        sensor.AddObservation(BotMoves.getJumpsLeft());
     }
     public override void OnActionReceived(ActionBuffers actions)
     {
+        Debug.Log("Action received");
         BotMoves.setHorizontal(actions.DiscreteActions[0]);
 
         BotMoves.setVertical(actions.DiscreteActions[1]);
 
         int j = actions.DiscreteActions[2];
+        Debug.Log("Salto =   "+j);
         if (j == 1) BotMoves.setJump(true);
         else BotMoves.setJump(false);
 
         int a = actions.DiscreteActions[3];
+        Debug.Log("ataque =   " + a);
         if (a == 1) BotMoves.setAttack(true);
         else BotMoves.setAttack(false);
 

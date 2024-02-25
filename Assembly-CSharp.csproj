@@ -74,6 +74,7 @@
     <Compile Include="Assets\botVariableValues\Scripts\BotCount.cs" />
     <Compile Include="Assets\DeathWall\DeathWallBehaviour.cs" />
     <Compile Include="Assets\OnGameScripts\camera_movement.cs" />
+    <Compile Include="Assets\Characters\LearnBot1.cs" />
     <Compile Include="Assets\attacks\PorrazoBehaviour.cs" />
     <Compile Include="Assets\Q-LearningIAs\Agents\FirstAgent.cs" />
     <Compile Include="Assets\MainMenu.cs" />

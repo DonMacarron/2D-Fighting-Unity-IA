@@ -1,0 +1,65 @@
+{
+    "Fight_FewData": {
+        "checkpoints": [
+            {
+                "steps": 137152,
+                "file_path": "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-137152.onnx",
+                "reward": null,
+                "creation_time": 1708876887.053136,
+                "auxillary_file_paths": [
+                    "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-137152.pt"
+                ]
+            },
+            {
+                "steps": 137216,
+                "file_path": "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-137216.onnx",
+                "reward": null,
+                "creation_time": 1708876906.6791577,
+                "auxillary_file_paths": [
+                    "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-137216.pt"
+                ]
+            },
+            {
+                "steps": 137408,
+                "file_path": "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-137408.onnx",
+                "reward": null,
+                "creation_time": 1708876985.5459955,
+                "auxillary_file_paths": [
+                    "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-137408.pt"
+                ]
+            },
+            {
+                "steps": 137472,
+                "file_path": "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-137472.onnx",
+                "reward": null,
+                "creation_time": 1708877062.506301,
+                "auxillary_file_paths": [
+                    "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-137472.pt"
+                ]
+            },
+            {
+                "steps": 140800,
+                "file_path": "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-140800.onnx",
+                "reward": null,
+                "creation_time": 1708877589.445555,
+                "auxillary_file_paths": [
+                    "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-140800.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 140800,
+            "file_path": "results\\FewDataBrain\\Fight_FewData.onnx",
+            "reward": null,
+            "creation_time": 1708877589.445555,
+            "auxillary_file_paths": [
+                "results\\FewDataBrain\\Fight_FewData\\Fight_FewData-140800.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.9.0+cpu"
+    }
+}

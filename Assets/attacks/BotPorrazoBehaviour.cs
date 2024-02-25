@@ -49,7 +49,7 @@ public class BotPorrazoBehaviour : MonoBehaviour
             if (personaje != null && collision.gameObject != deQuienEsAtaque)
             {
                 personaje.recibirGolpe(daño, direc);
-                scriptPlayer.Agent.hitReward();
+                scriptPlayer.enemyHit();
                 Destroy(this);
             }
         }
